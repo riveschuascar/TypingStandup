@@ -75,5 +75,8 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+
+    add("androidMainImplementation", "io.coil-kt.coil3:coil-compose:3.4.0")
+    add("androidMainImplementation", "io.coil-kt.coil3:coil-network-okhttp:3.4.0")
 }
 
