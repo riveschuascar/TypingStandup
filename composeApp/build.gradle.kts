@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 kotlin {
@@ -74,6 +75,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.firebase.database)
     debugImplementation(libs.compose.uiTooling)
 
     add("androidMainImplementation", "io.coil-kt.coil3:coil-compose:3.4.0")
