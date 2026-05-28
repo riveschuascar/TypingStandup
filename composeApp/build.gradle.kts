@@ -30,6 +30,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.firebase.database)
+            implementation("com.google.firebase:firebase-config:22.0.1")
         }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
@@ -75,7 +77,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.firebase.database)
     debugImplementation(libs.compose.uiTooling)
 
     add("androidMainImplementation", "io.coil-kt.coil3:coil-compose:3.4.0")
