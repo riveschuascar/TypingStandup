@@ -41,6 +41,12 @@ coroutines = "1.8.1"
 turbine = "1.1.0"
 composeTest = "1.10.3"
 mockative = "3.2.3"
+composeMultiplatform = "1.10.3"
+junit = "4.13.2"
+kotlin = "2.3.21"
+material3 = "1.10.0-alpha05"
+googleGmsGoogleServices = "4.4.4"
+firebaseDatabase = "22.0.1"
 
 [libraries]
 # Kotlin
@@ -110,6 +116,7 @@ ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = 
 ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "composeTest" }
 mockative = { module = "io.mockative:mockative", version.ref = "mockative" }
 mockativeProcessor = { module = "io.mockative:mockative-processor", version.ref = "mockative" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 
 [plugins]
 # Android
@@ -130,3 +137,5 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 # Testing
 mockative = { id = "io.mockative", version.ref = "mockative" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
