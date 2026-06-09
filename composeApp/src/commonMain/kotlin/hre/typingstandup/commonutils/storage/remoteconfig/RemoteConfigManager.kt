@@ -1,4 +1,4 @@
-package hre.typingstandup.utils.storage.data.datasource.remote
+package hre.typingstandup.commonutils.storage.remoteconfig
 
 expect class RemoteConfigManager() {
     suspend fun fetchAndActivate(): Boolean

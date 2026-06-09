@@ -1,6 +1,6 @@
-package hre.typingstandup.utils.storage.domain.usecase
+package hre.typingstandup.commonutils.storage.domain.usecase
 
-import hre.typingstandup.utils.storage.domain.repository.IRemoteConfigRepository
+import hre.typingstandup.commonutils.storage.domain.repository.IRemoteConfigRepository
 
 class GetOnBoardUseCase (
     private val repository: IRemoteConfigRepository

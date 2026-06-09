@@ -1,4 +1,4 @@
-package hre.typingstandup.utils.workers.connectivity
+package hre.typingstandup.commonutils.workers.connectivity
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -8,7 +8,6 @@ import org.koin.core.component.inject
 
 actual class ConnectivityChecker actual constructor() : KoinComponent {
     private val context: Context by inject()
-
     actual fun isOnline(): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false

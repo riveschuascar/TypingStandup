@@ -1,9 +1,9 @@
 package hre.typingstandup.remoteconfig.repository
 
-import hre.typingstandup.utils.workers.connectivity.ConnectivityChecker
-import hre.typingstandup.utils.storage.data.datasource.local.IDataBase
-import hre.typingstandup.utils.storage.data.datasource.remote.RemoteConfigManager
-import hre.typingstandup.utils.storage.domain.repository.IRemoteConfigRepository
+import hre.typingstandup.commonutils.workers.connectivity.ConnectivityChecker
+import hre.typingstandup.commonutils.storage.data.datasource.local.IDataBase
+import hre.typingstandup.commonutils.storage.remoteconfig.RemoteConfigManager
+import hre.typingstandup.commonutils.storage.domain.repository.IRemoteConfigRepository
 
 class FirebaseConfigRepository(
     private val remote: RemoteConfigManager,

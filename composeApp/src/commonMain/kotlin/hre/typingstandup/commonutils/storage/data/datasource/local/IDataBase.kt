@@ -1,4 +1,4 @@
-package hre.typingstandup.utils.storage.data.datasource.local
+package hre.typingstandup.commonutils.storage.data.datasource.local
 
 interface IDataBase {
     suspend fun saveConfig(key: String, value: String)

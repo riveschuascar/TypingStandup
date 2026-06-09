@@ -7,6 +7,9 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.googleGmsGoogleServices)
+    // Room - Database
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -41,7 +44,11 @@ kotlin {
             implementation(libs.compose.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            // Design System
             implementation(project(":designsystem"))
+            // Room - Database
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -78,9 +85,15 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+    // Koin - DI
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.core)
     add("androidMainImplementation", "io.coil-kt.coil3:coil-compose:3.4.0")
     add("androidMainImplementation", "io.coil-kt.coil3:coil-network-okhttp:3.4.0")
+    // Room - Database
+    add("kspAndroid", libs.androidx.room.compiler)
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}

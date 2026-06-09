@@ -1,22 +1,21 @@
-package hre.typingstandup.utils.storage.data.datasource.remote
+package hre.typingstandup.commonutils.storage.remoteconfig
 
 import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.tasks.await
 
-
-actual class RemoteConfigManager {
-    private val remote: FirebaseRemoteConfig = Firebase.remoteConfig
+actual class RemoteConfigManager actual constructor() {
+    private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
 
     init {
         val configSettings = com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(30)
             .build()
 
-        remote.setConfigSettingsAsync(configSettings)
+        remoteConfig.setConfigSettingsAsync(configSettings)
 
-        remote.setDefaultsAsync(
+        remoteConfig.setDefaultsAsync(
             mapOf(
                 "feature_enabled" to false,
                 "welcome_text" to "Hola default"
@@ -25,21 +24,20 @@ actual class RemoteConfigManager {
     }
 
     actual suspend fun fetchAndActivate(): Boolean {
-        return remote.fetchAndActivate().await()
+        return remoteConfig.fetchAndActivate().await()
     }
 
     actual fun getString(key: String): String {
-        remote.fetchAndActivate()
-        return remote.getString(key)
+        remoteConfig.fetchAndActivate()
+        return remoteConfig.getString(key)
     }
 
     actual fun getBoolean(key: String): Boolean {
-        remote.fetchAndActivate()
-        return remote.getBoolean(key)
+        remoteConfig.fetchAndActivate()
+        return remoteConfig.getBoolean(key)
     }
 
     actual fun getJSON(key: String): String {
-        remote.fetchAndActivate()
-        return remote.getString(key)
+        TODO("Not yet implemented")
     }
 }

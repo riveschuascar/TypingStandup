@@ -1,4 +1,4 @@
-package hre.typingstandup.utils.storage.domain.repository
+package hre.typingstandup.commonutils.storage.domain.repository
 
 interface IRemoteConfigRepository {
     /**
