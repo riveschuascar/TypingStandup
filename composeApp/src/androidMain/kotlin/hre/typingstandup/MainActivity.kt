@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -16,7 +15,7 @@ import androidx.compose.ui.Modifier
 import com.google.firebase.FirebaseApp
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
-import hre.typingstandup.data.parseOnboardingJson
+import hre.typingstandup.onboard.data.parseOnboardingJson
 import hre.typingstandup.onboard.presentation.screen.OnboardingScreen
 import typingstandup.designsystem.composable.theme.typingStandupTheme
 

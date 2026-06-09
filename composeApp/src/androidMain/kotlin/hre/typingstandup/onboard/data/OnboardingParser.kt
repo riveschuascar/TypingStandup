@@ -1,4 +1,4 @@
-package hre.typingstandup.data
+package hre.typingstandup.onboard.data
 
 import hre.typingstandup.onboard.presentation.screen.OnboardingSlideUi
 import org.json.JSONArray
