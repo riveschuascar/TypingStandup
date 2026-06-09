@@ -18,11 +18,12 @@ import org.jetbrains.compose.resources.painterResource
 
 import typingstandup.composeapp.generated.resources.Res
 import typingstandup.composeapp.generated.resources.compose_multiplatform
+import typingstandup.designsystem.composable.theme.typingStandupTheme
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    typingStandupTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
