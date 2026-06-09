@@ -1,6 +1,6 @@
 package hre.typingstandup.data
 
-import hre.typingstandup.ui.OnboardingSlideUi
+import hre.typingstandup.onboard.presentation.screen.OnboardingSlideUi
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Locale

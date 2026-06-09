@@ -51,7 +51,7 @@ kotlin {
 
 android {
     namespace = "hre.typingstandup"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdkVersion(libs.versions.android.compileSdk.get().toInt())
 
     defaultConfig {
         applicationId = "hre.typingstandup"

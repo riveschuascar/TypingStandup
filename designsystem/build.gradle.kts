@@ -14,7 +14,7 @@ kotlin {
     androidLibrary {
         namespace = "typingstandup.designsystem"
         compileSdk = 36
-        minSdk = 25
+        minSdk = 24
 
         withHostTestBuilder {
         }

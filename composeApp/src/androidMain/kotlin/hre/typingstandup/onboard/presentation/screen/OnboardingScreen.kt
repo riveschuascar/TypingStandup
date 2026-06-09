@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +37,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import hre.typingstandup.onboard.presentation.composable.PrimarySmallButton
+import hre.typingstandup.onboard.presentation.composable.PrimaryTerminalButton
+import hre.typingstandup.onboard.presentation.composable.SecondarySmallButton
+import hre.typingstandup.onboard.presentation.composable.SecondaryTerminalButton
 
 data class OnboardingSlideUi(
     val id: Int,
@@ -43,14 +48,6 @@ data class OnboardingSlideUi(
     val description: String,
     val imageUrl: String
 )
-
-private val DarkBackground = Color(0xFF0D1117)
-private val DarkPanel = Color(0xFF111820)
-private val Green = Color(0xFF74DE7A)
-private val GreenDark = Color(0xFF1E8E3E)
-private val TextWhite = Color(0xFFE8EAED)
-private val TextMuted = Color(0xFFB8C0C8)
-private val BorderGreen = Color(0xFF36D66B)
 
 @Composable
 fun OnboardingScreen(
@@ -66,7 +63,7 @@ fun OnboardingScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(MaterialTheme.colorScheme.background)
     ) {
         when (currentPage) {
             0 -> WelcomePage(
@@ -130,7 +127,7 @@ private fun WelcomePage(
 
         Text(
             text = slide.title,
-            color = TextWhite,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 24.sp,
             lineHeight = 30.sp,
             fontWeight = FontWeight.Bold,
@@ -141,7 +138,7 @@ private fun WelcomePage(
 
         Text(
             text = slide.description,
-            color = TextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 13.sp,
             lineHeight = 20.sp,
             textAlign = TextAlign.Center,
@@ -200,7 +197,7 @@ private fun MissionPage(
 
         Text(
             text = slide.title.uppercase(),
-            color = Green,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 15.sp,
             fontFamily = FontFamily.Monospace,
             letterSpacing = 1.sp,
@@ -221,7 +218,7 @@ private fun MissionPage(
         ) {
             Text(
                 text = slide.description,
-                color = TextMuted,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 14.sp,
                 lineHeight = 22.sp,
                 textAlign = TextAlign.Center,
@@ -231,7 +228,7 @@ private fun MissionPage(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        PrimaryTerminalButton(
+        PrimaryTerminalButton (
             text = "Siguiente >",
             onClick = onNext
         )
@@ -260,7 +257,7 @@ private fun ProtocolPage(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .border(2.dp, BorderGreen)
+            .border(2.dp, MaterialTheme.colorScheme.primary)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -286,7 +283,7 @@ private fun ProtocolPage(
 
         Text(
             text = slide.title,
-            color = TextWhite,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 27.sp,
             lineHeight = 34.sp,
             fontFamily = FontFamily.Monospace,
@@ -298,7 +295,7 @@ private fun ProtocolPage(
 
         Text(
             text = slide.description,
-            color = TextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 14.sp,
             lineHeight = 21.sp,
             textAlign = TextAlign.Center,
@@ -387,7 +384,7 @@ private fun RankingPage(
 
         Text(
             text = "> ${slide.title} ▌",
-            color = TextWhite,
+            color = MaterialTheme.colorScheme.onBackground,
             fontSize = 27.sp,
             lineHeight = 34.sp,
             fontFamily = FontFamily.Monospace,
@@ -399,7 +396,7 @@ private fun RankingPage(
 
         Text(
             text = slide.description,
-            color = TextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 16.sp,
             lineHeight = 24.sp,
             textAlign = TextAlign.Center
@@ -414,8 +411,8 @@ private fun RankingPage(
                 .height(48.dp),
             shape = RoundedCornerShape(6.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = GreenDark,
-                contentColor = TextWhite
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onBackground
             )
         ) {
             Text(
@@ -427,7 +424,7 @@ private fun RankingPage(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        SecondaryTerminalButton(
+        SecondaryTerminalButton (
             text = "< Atrás",
             onClick = onBack
         )
@@ -453,7 +450,7 @@ private fun RemoteImage(
                 color = Color(0xFF255D3C),
                 shape = RoundedCornerShape(7.dp)
             )
-            .background(DarkPanel)
+            .background(MaterialTheme.colorScheme.surfaceContainer)
     )
 }
 
@@ -470,7 +467,7 @@ private fun ProgressHeader(
         ) {
             Text(
                 text = label,
-                color = TextWhite,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 14.sp,
                 letterSpacing = 4.sp
@@ -478,7 +475,7 @@ private fun ProgressHeader(
 
             Text(
                 text = "${(currentPage + 1).toString().padStart(2, '0')} / ${totalPages.toString().padStart(2, '0')}",
-                color = Green,
+                color = MaterialTheme.colorScheme.primary,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 14.sp
             )
@@ -496,7 +493,7 @@ private fun ProgressHeader(
                 modifier = Modifier
                     .fillMaxWidth((currentPage + 1).toFloat() / totalPages.toFloat())
                     .fillMaxHeight()
-                    .background(Green)
+                    .background(MaterialTheme.colorScheme.primary)
             )
         }
     }
@@ -514,7 +511,7 @@ private fun TopBar(
     ) {
         Text(
             text = "▻ $title",
-            color = Green,
+            color = MaterialTheme.colorScheme.primary,
             fontFamily = FontFamily.Monospace,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
@@ -526,14 +523,14 @@ private fun TopBar(
             modifier = Modifier
                 .width(24.dp)
                 .height(4.dp)
-                .background(Green, RoundedCornerShape(4.dp))
+                .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(4.dp))
         )
 
         Spacer(modifier = Modifier.width(10.dp))
 
         Text(
             text = "${currentPage + 1}/$totalPages",
-            color = TextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontFamily = FontFamily.Monospace,
             fontSize = 12.sp,
             modifier = Modifier
@@ -551,7 +548,7 @@ private fun ModeCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val borderColor = if (selected) Green else Color(0xFF1A2530)
+    val borderColor = if (selected) MaterialTheme.colorScheme.primary else Color(0xFF1A2530)
     val background = if (selected) Color(0xFF102418) else Color(0xFF111820)
 
     Column(
@@ -577,7 +574,7 @@ private fun ModeCard(
         ) {
             Text(
                 text = icon,
-                color = Green,
+                color = MaterialTheme.colorScheme.primary,
                 fontFamily = FontFamily.Monospace,
                 fontSize = 18.sp
             )
@@ -587,7 +584,7 @@ private fun ModeCard(
 
         Text(
             text = title,
-            color = TextMuted,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontFamily = FontFamily.Monospace,
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold

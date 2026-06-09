@@ -17,7 +17,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import hre.typingstandup.data.parseOnboardingJson
-import hre.typingstandup.ui.OnboardingScreen
+import hre.typingstandup.onboard.presentation.screen.OnboardingScreen
+import typingstandup.designsystem.composable.theme.typingStandupTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MaterialTheme {
+            typingStandupTheme {
                 val showHome = remember { mutableStateOf(false) }
                 val slidesState = remember { mutableStateOf(parseOnboardingJson(DEFAULT_ONBOARDING_JSON)) }
 
