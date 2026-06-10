@@ -12,4 +12,7 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id LIMIT 1")
     suspend fun findById(id: String): UserEntity?
+
+    @Query("SELECT * FROM users LIMIT 1")
+    suspend fun findFirstUser(): UserEntity?
 }

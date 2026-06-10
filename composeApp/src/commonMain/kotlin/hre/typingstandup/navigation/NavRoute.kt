@@ -12,4 +12,7 @@ sealed class NavRoute(val route: String) {
 
     @Serializable
     object Home : NavRoute("home")
+
+    @Serializable
+    object Profile : NavRoute("profile")
 }

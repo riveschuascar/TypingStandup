@@ -2,6 +2,8 @@ package hre.typingstandup.di
 
 import hre.typingstandup.commonutils.storage.database.AppDatabase
 import hre.typingstandup.commonutils.storage.database.getDatabaseBuilder
+import hre.typingstandup.profile.data.local.ProfileLocalDataSource
+import hre.typingstandup.profile.data.local.ProfileLocalDataSourceAndroid
 import hre.typingstandup.signup.data.local.SignupLocalDataSource
 import hre.typingstandup.signup.data.local.SignupLocalDataSourceAndroid
 import hre.typingstandup.signup.data.remote.SignupRemoteDataSource
@@ -20,5 +22,9 @@ val platformModule = module {
 
     single<SignupRemoteDataSource> {
         SignupRemoteDataSourceAndroid()
+    }
+
+    single<ProfileLocalDataSource> {
+        ProfileLocalDataSourceAndroid(get())
     }
 }

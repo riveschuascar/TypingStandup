@@ -1,6 +1,7 @@
 package hre.typingstandup.di
 
 import hre.typingstandup.commonutils.storage.domain.usecase.GetOnBoardUseCase
+import hre.typingstandup.profile.domain.usecase.GetProfileUseCase
 import hre.typingstandup.signup.domain.usecase.CreateUserUseCase
 import hre.typingstandup.signup.domain.usecase.SavePendingSignupUseCase
 import hre.typingstandup.signup.domain.usecase.ValidateSignupUseCase
@@ -12,4 +13,5 @@ val domainModule = module {
     singleOf(::ValidateSignupUseCase)
     singleOf(::SavePendingSignupUseCase)
     singleOf(::GetOnBoardUseCase)
+    singleOf(::GetProfileUseCase)
 }
