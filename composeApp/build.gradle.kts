@@ -81,6 +81,14 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+        }
+        androidInstrumentedTest.dependencies {
+            implementation(libs.kotlin.testJunit)
+            implementation(libs.androidx.testExt.junit)
+            implementation(libs.androidx.runner)
+            implementation(libs.androidx.espresso.core)
+            implementation(libs.ui.test.junit4)
         }
     }
 }
@@ -95,6 +103,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     packaging {
         resources {
@@ -114,6 +123,7 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+    debugImplementation(libs.ui.test.manifest)
     // Firebase
     implementation(libs.firebase.database)
     implementation(platform(libs.firebase.bom))
