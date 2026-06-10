@@ -2,8 +2,7 @@ package hre.typingstandup.onboard.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hre.typingstandup.commonutils.storage.remoteconfig.RemoteConfigManager
-import hre.typingstandup.onboard.data.ONBOARDING_CONFIG_KEY
+import hre.typingstandup.commonutils.storage.domain.usecase.GetOnBoardUseCase
 import hre.typingstandup.onboard.data.defaultOnboardingSlides
 import hre.typingstandup.onboard.data.parseOnboardingJson
 import hre.typingstandup.onboard.presentation.screen.OnboardingSlideUi
@@ -26,9 +25,9 @@ sealed interface OnboardingIntent {
     data class SelectMode(val mode: String) : OnboardingIntent
 }
 
-class OnboardingViewModel : ViewModel() {
-
-    private val remoteConfig = RemoteConfigManager()
+class OnboardingViewModel(
+    private val getOnBoardUseCase: GetOnBoardUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(OnboardingState())
     val state: StateFlow<OnboardingState> = _state.asStateFlow()
@@ -40,8 +39,7 @@ class OnboardingViewModel : ViewModel() {
     private fun loadOnboarding() {
         viewModelScope.launch {
             runCatching {
-                remoteConfig.fetchAndActivate()
-                val json = remoteConfig.getJSON(ONBOARDING_CONFIG_KEY)
+                val json = getOnBoardUseCase()
                 parseOnboardingJson(json)
             }.onSuccess { slides ->
                 _state.update {
