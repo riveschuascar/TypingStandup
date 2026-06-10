@@ -4,20 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.FirebaseApp
-import hre.typingstandup.onboard.presentation.OnboardingViewModel
-import hre.typingstandup.onboard.presentation.screen.OnboardingScreen
+import hre.typingstandup.di.getModules
+import hre.typingstandup.di.platformModule
+import hre.typingstandup.navigation.AppNavHost
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import typingstandup.designsystem.composable.theme.typingStandupTheme
 
 class MainActivity : ComponentActivity() {
@@ -27,38 +19,15 @@ class MainActivity : ComponentActivity() {
 
         FirebaseApp.initializeApp(this)
 
+        startKoin {
+            androidContext(this@MainActivity)
+            modules(getModules() + platformModule)
+        }
+
         setContent {
             typingStandupTheme {
-                val showHome = remember { mutableStateOf(false) }
-
-                val onboardingViewModel: OnboardingViewModel = viewModel()
-                val onboardingState by onboardingViewModel.state.collectAsState()
-
-                if (showHome.value) {
-                    HomeTemporal()
-                } else {
-                    OnboardingScreen(
-                        state = onboardingState,
-                        onIntent = onboardingViewModel::onIntent,
-                        onSkip = {
-                            showHome.value = true
-                        },
-                        onFinish = {
-                            showHome.value = true
-                        }
-                    )
-                }
+                AppNavHost()
             }
         }
-    }
-}
-
-@Composable
-fun HomeTemporal() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Text("HOME - Aplicación iniciada")
     }
 }
