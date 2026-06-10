@@ -1,43 +1,41 @@
 package hre.typingstandup.commonutils.storage.remoteconfig
 
-import com.google.firebase.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.remoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import hre.typingstandup.onboard.data.DEFAULT_ONBOARDING_JSON
+import hre.typingstandup.onboard.data.ONBOARDING_CONFIG_KEY
 import kotlinx.coroutines.tasks.await
 
 actual class RemoteConfigManager actual constructor() {
-    private val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+    private val remote: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
 
     init {
-        val configSettings = com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings.Builder()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(30)
             .build()
 
-        remoteConfig.setConfigSettingsAsync(configSettings)
+        remote.setConfigSettingsAsync(configSettings)
 
-        remoteConfig.setDefaultsAsync(
+        remote.setDefaultsAsync(
             mapOf(
-                "feature_enabled" to false,
-                "welcome_text" to "Hola default"
+                ONBOARDING_CONFIG_KEY to DEFAULT_ONBOARDING_JSON
             )
         )
     }
 
     actual suspend fun fetchAndActivate(): Boolean {
-        return remoteConfig.fetchAndActivate().await()
+        return remote.fetchAndActivate().await()
     }
 
     actual fun getString(key: String): String {
-        remoteConfig.fetchAndActivate()
-        return remoteConfig.getString(key)
+        return remote.getString(key)
     }
 
     actual fun getBoolean(key: String): Boolean {
-        remoteConfig.fetchAndActivate()
-        return remoteConfig.getBoolean(key)
+        return remote.getBoolean(key)
     }
 
     actual fun getJSON(key: String): String {
-        TODO("Not yet implemented")
+        return remote.getString(key)
     }
 }

@@ -21,15 +21,9 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -37,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import hre.typingstandup.onboard.presentation.OnboardingIntent
+import hre.typingstandup.onboard.presentation.OnboardingState
 import hre.typingstandup.onboard.presentation.composable.PrimarySmallButton
 import hre.typingstandup.onboard.presentation.composable.PrimaryTerminalButton
 import hre.typingstandup.onboard.presentation.composable.SecondarySmallButton
@@ -51,52 +47,64 @@ data class OnboardingSlideUi(
 
 @Composable
 fun OnboardingScreen(
-    slides: List<OnboardingSlideUi>,
+    state: OnboardingState,
+    onIntent: (OnboardingIntent) -> Unit,
     onSkip: () -> Unit,
     onFinish: () -> Unit
 ) {
-    val safeSlides = if (slides.size >= 4) slides else demoSlides()
-
-    var currentPage by rememberSaveable { mutableIntStateOf(0) }
-    var selectedMode by rememberSaveable { mutableStateOf("CLASICO") }
+    val safeSlides = if (state.slides.size >= 4) state.slides else demoSlides()
+    val currentPage = state.currentPage.coerceIn(0, safeSlides.lastIndex)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        when (currentPage) {
-            0 -> WelcomePage(
-                slide = safeSlides[0],
-                onStartConfig = { currentPage = 1 },
-                onSkip = onSkip
-            )
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Cargando configuración...",
+                    color = MaterialTheme.colorScheme.primary,
+                    fontFamily = FontFamily.Monospace
+                )
+            }
+        } else {
+            when (currentPage) {
+                0 -> WelcomePage(
+                    slide = safeSlides[0],
+                    onStartConfig = { onIntent(OnboardingIntent.NextPage) },
+                    onSkip = onSkip
+                )
 
-            1 -> MissionPage(
-                slide = safeSlides[1],
-                currentPage = currentPage,
-                totalPages = safeSlides.size,
-                onNext = { currentPage = 2 },
-                onBack = { currentPage = 0 }
-            )
+                1 -> MissionPage(
+                    slide = safeSlides[1],
+                    currentPage = currentPage,
+                    totalPages = safeSlides.size,
+                    onNext = { onIntent(OnboardingIntent.NextPage) },
+                    onBack = { onIntent(OnboardingIntent.PreviousPage) }
+                )
 
-            2 -> ProtocolPage(
-                slide = safeSlides[2],
-                currentPage = currentPage,
-                totalPages = safeSlides.size,
-                selectedMode = selectedMode,
-                onModeSelected = { selectedMode = it },
-                onNext = { currentPage = 3 },
-                onBack = { currentPage = 1 }
-            )
+                2 -> ProtocolPage(
+                    slide = safeSlides[2],
+                    currentPage = currentPage,
+                    totalPages = safeSlides.size,
+                    selectedMode = state.selectedMode,
+                    onModeSelected = { onIntent(OnboardingIntent.SelectMode(it)) },
+                    onNext = { onIntent(OnboardingIntent.NextPage) },
+                    onBack = { onIntent(OnboardingIntent.PreviousPage) }
+                )
 
-            3 -> RankingPage(
-                slide = safeSlides[3],
-                currentPage = currentPage,
-                totalPages = safeSlides.size,
-                onFinish = onFinish,
-                onBack = { currentPage = 2 }
-            )
+                3 -> RankingPage(
+                    slide = safeSlides[3],
+                    currentPage = currentPage,
+                    totalPages = safeSlides.size,
+                    onFinish = onFinish,
+                    onBack = { onIntent(OnboardingIntent.PreviousPage) }
+                )
+            }
         }
     }
 }
@@ -211,7 +219,7 @@ private fun MissionPage(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = Color(0xFF1F2A33),
+                    color = MaterialTheme.colorScheme.outlineVariant,
                     shape = RoundedCornerShape(4.dp)
                 )
                 .padding(18.dp)
@@ -447,7 +455,7 @@ private fun RemoteImage(
             .clip(RoundedCornerShape(7.dp))
             .border(
                 width = 1.dp,
-                color = Color(0xFF255D3C),
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(7.dp)
             )
             .background(MaterialTheme.colorScheme.surfaceContainer)
@@ -487,7 +495,7 @@ private fun ProgressHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(3.dp)
-                .background(Color(0xFF30363D))
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest)
         ) {
             Box(
                 modifier = Modifier
@@ -534,7 +542,7 @@ private fun TopBar(
             fontFamily = FontFamily.Monospace,
             fontSize = 12.sp,
             modifier = Modifier
-                .background(Color(0xFF1C222A), RoundedCornerShape(4.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerHigh, RoundedCornerShape(4.dp))
                 .padding(horizontal = 8.dp, vertical = 4.dp)
         )
     }
@@ -548,8 +556,17 @@ private fun ModeCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val borderColor = if (selected) MaterialTheme.colorScheme.primary else Color(0xFF1A2530)
-    val background = if (selected) Color(0xFF102418) else Color(0xFF111820)
+    val borderColor = if (selected) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.outlineVariant
+    }
+
+    val background = if (selected) {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerLow
+    }
 
     Column(
         modifier = modifier
@@ -569,7 +586,7 @@ private fun ModeCard(
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .background(Color(0xFF173B25), RoundedCornerShape(4.dp)),
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest, RoundedCornerShape(4.dp)),
             contentAlignment = Alignment.Center
         ) {
             Text(

@@ -11,7 +11,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,18 +22,18 @@ fun PrimaryTerminalButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxWidth()
             .height(45.dp),
         shape = RoundedCornerShape(4.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color(0xFF07120B)
+            contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Text(
             text = text,
-            fontFamily = FontFamily.Companion.Monospace,
+            fontFamily = FontFamily.Monospace,
             fontSize = 13.sp
         )
     }
@@ -47,18 +46,18 @@ fun SecondaryTerminalButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = Modifier.Companion
+        modifier = Modifier
             .fillMaxWidth()
             .height(45.dp),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(4.dp),
-        border = BorderStroke(1.dp, Color(0xFF26323B)),
+        shape = RoundedCornerShape(4.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     ) {
         Text(
             text = text,
-            fontFamily = FontFamily.Companion.Monospace,
+            fontFamily = FontFamily.Monospace,
             fontSize = 13.sp
         )
     }
@@ -68,20 +67,20 @@ fun SecondaryTerminalButton(
 fun PrimarySmallButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier.Companion
+    modifier: Modifier = Modifier
 ) {
     Button(
         onClick = onClick,
         modifier = modifier.height(41.dp),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(7.dp),
+        shape = RoundedCornerShape(7.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = Color(0xFF07120B)
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
         Text(
             text = text,
-            fontFamily = FontFamily.Companion.Monospace,
+            fontFamily = FontFamily.Monospace,
             fontSize = 12.sp
         )
     }
@@ -91,20 +90,20 @@ fun PrimarySmallButton(
 fun SecondarySmallButton(
     text: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier.Companion
+    modifier: Modifier = Modifier
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier.height(41.dp),
-        shape = androidx.compose.foundation.shape.RoundedCornerShape(7.dp),
-        border = BorderStroke(1.dp, Color(0xFF26323B)),
+        shape = RoundedCornerShape(7.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     ) {
         Text(
             text = text,
-            fontFamily = FontFamily.Companion.Monospace,
+            fontFamily = FontFamily.Monospace,
             fontSize = 12.sp
         )
     }
