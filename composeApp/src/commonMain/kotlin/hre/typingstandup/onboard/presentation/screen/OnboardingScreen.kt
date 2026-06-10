@@ -31,8 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import hre.typingstandup.onboard.presentation.OnboardingIntent
-import hre.typingstandup.onboard.presentation.OnboardingState
+import hre.typingstandup.onboard.presentation.viewmodel.OnboardingIntent
+import hre.typingstandup.onboard.presentation.viewmodel.OnboardingState
 import hre.typingstandup.onboard.presentation.composable.PrimarySmallButton
 import hre.typingstandup.onboard.presentation.composable.PrimaryTerminalButton
 import hre.typingstandup.onboard.presentation.composable.SecondarySmallButton

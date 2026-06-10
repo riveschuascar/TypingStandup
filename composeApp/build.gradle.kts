@@ -1,5 +1,6 @@
-// import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.net.URI
+import java.io.InputStream
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -129,4 +130,48 @@ dependencies {
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+tasks.register("downloadLocoStrings") {
+    group = "localization"
+    description = "Downloads strings from Loco (Localise.biz) for all supported languages."
+
+    val apiKey = "uM6rm68FB2SB_699WImn0qomCpNMxGLC"
+    val baseUrl = "https://localise.biz/api/export/locale"
+    val locales = mapOf(
+        "en" to "strings-en.xml",
+        "es" to "strings-es.xml",
+        "fr" to "strings-fr.xml"
+    )
+    val outputDir = file("src/commonMain/composeResources/values")
+
+    doLast {
+        if (!outputDir.exists()) {
+            outputDir.mkdirs()
+        }
+        locales.forEach { (locale, fileName) ->
+            val url = "$baseUrl/$locale.xml?key=$apiKey&format=android"
+            println("[LOCO] Downloading $locale translations...")
+            val outputFile = File(outputDir, fileName)
+            try {
+                URI(url).toURL().openStream().use { input: InputStream ->
+                    outputFile.outputStream().use { output ->
+                        input.copyTo(output)
+                    }
+                }
+                println("[LOCO] Successfully updated: $fileName")
+            } catch (e: Exception) {
+                logger.error("[LOCO] Failed to download $locale: ${e.message}")
+            }
+        }
+    }
+}
+
+// Automatically download strings when generating resources or building for Android
+tasks.matching { it.name.startsWith("generateComposeResClass") }.configureEach {
+    dependsOn("downloadLocoStrings")
+}
+
+tasks.matching { it.name == "preBuild" }.configureEach {
+    dependsOn("downloadLocoStrings")
 }

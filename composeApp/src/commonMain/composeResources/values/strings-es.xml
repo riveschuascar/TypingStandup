@@ -1,2 +1,73 @@
-<resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Loco xml export: Android strings
+ Project: Proyecto-Progra-Mobile
+ Locale: es-ES, Spanish (Spain)
+ Exported by: Grizzz Carvajal
+ Exported at: Wed, 10 Jun 2026 13:25:25 -0400
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="pantalla_carga_1_comando"></string>
+    <string name="pantalla_carga_2_logs"></string>
+    <string name="pantalla_carga_3_inicializando">&gt; Inicializando TypingStandup...</string>
+    <string name="pantalla_carga_4_estado">Cargando Entorno</string>
+    <string name="pantalla_carga_5_modulos">OBTENIENDO_MÓDULOS: [\nlayout, analytics, leaderboard, engine\n]</string>
+    <string name="registro_usuario_1_cabecera">Iniciar Sesión</string>
+    <string name="registro_usuario_2_archivo"></string>
+    <string name="registro_usuario_3_subtitulo">Inicializa tu identidad de desarrollador para registrar tu progreso.</string>
+    <string name="registro_usuario_4_pregunta">¿Listo para iniciar sesión?</string>
+    <string name="registro_usuario_5_boton">Iniciar Sesión</string>
+    <string name="registro_usuario_6_terminos">Al iniciar sesión, aceptas los términos de la LICENCIA y del README.</string>
+    <string name="perfil_usuario_1_nivel"></string>
+    <string name="perfil_usuario_2_username"></string>
+    <string name="perfil_usuario_3_antiguedad">Registrado: hace %s días</string>
+    <string name="perfil_usuario_4_precision_titulo">PRECISIÓN</string>
+    <string name="perfil_usuario_5_wpm_titulo"></string>
+    <string name="perfil_usuario_6_commits_titulo">Commits Recientes</string>
+    <string name="perfil_usuario_7_ver_todo">Ver Todo</string>
+    <string name="perfil_usuario_commits_tiempo_hace_minutos">hace %dm</string>
+    <string name="perfil_usuario_commits_tiempo_hace_horas">hace %dh</string>
+    <string name="perfil_usuario_commits_tiempo_ayer">Ayer</string>
+    <string name="perfil_usuario_commits_tiempo_hace_dias">hace %dd días</string>
+    <string name="menu_inferior_1_home">Inicio</string>
+    <string name="menu_inferior_2_play">Jugar</string>
+    <string name="menu_inferior_3_stats"></string>
+    <string name="menu_inferior_4_ranks"></string>
+    <string name="editar_perfil_1_seccion_credenciales">Credenciales</string>
+    <string name="editar_perfil_2_seccion_ajustes">Ajustes del Entorno</string>
+    <string name="editar_perfil_3_desc_notificaciones">Activar notificaciones</string>
+    <string name="editar_perfil_4_desc_haptic">Vibración táctil al cometer errores de teclado</string>
+    <string name="editar_perfil_5_desc_tema">Modo actual: %s</string>
+    <string name="editar_perfil_6_boton_descartar"></string>
+    <string name="editar_perfil_7_boton_guardar"></string>
+    <string name="editar_perfil_label_username">\"nombre_usuario\":</string>
+    <string name="editar_perfil_label_email">\"correo_electronico\":</string>
+    <string name="editar_perfil_label_password">\"contraseña\":</string>
+    <string name="editar_perfil_seccion_credenciales_username_desc">// Mantenla segura</string>
+    <string name="editar_perfil_seccion_credenciales_email_desc">// Para la recuperación de la cuenta</string>
+    <string name="editar_perfil_seccion_credenciales_password_desc">// Tu alias único</string>
+    <string name="modos_juego_1_clasico_titulo">Modo Clásico</string>
+    <string name="modos_juego_1_clasico_desc">La pura experiencia de desarrollador. Escribe a través de bases de código abierto seleccionadas para desarrollar memoria muscular y velocidad.</string>
+    <string name="modos_juego_2_desafios_titulo">Desafíos</string>
+    <string name="modos_juego_2_desafios_desc">Entornos de alto riesgo. Escribe bajo presión con texto que desaparece, límites estrictos de errores y tiempo regresivo.</string>
+    <string name="modos_juego_3_semanal_titulo">Standup Semanal</string>
+    <string name="modos_juego_3_semanal_desc">El sprint de la clasificación global. Compite contra la comunidad con un fragmento de código único que se actualiza cada lunes.</string>
+    <string name="juego_progreso_1_tiempo_titulo">TIEMPO</string>
+    <string name="juego_progreso_2_progreso_titulo">PROGRESO DE LA SESIÓN</string>
+    <string name="metricas_partida_1_titulo">Sesión Completada</string>
+    <string name="metricas_partida_2_wpm_subtitulo">PALABRAS/MIN</string>
+    <string name="metricas_partida_3_precision_subtitulo">% DE PRECISIÓN</string>
+    <string name="metricas_partida_4_desglose_titulo">DESGLOSE DE CARACTERES</string>
+    <string name="metricas_partida_5_desglose_aciertos">Aciertos</string>
+    <string name="metricas_partida_6_desglose_errores">Errores</string>
+    <string name="metricas_partida_7_boton_reintentar"></string>
+    <string name="metricas_partida_8_boton_confirmar"></string>
+    <string name="clasificacion_global_1_titulo">CLASIFICACIONES</string>
+    <string name="clasificacion_global_2_filtro_global"></string>
+    <string name="clasificacion_global_3_filtro_semanal">Semanal</string>
+    <string name="clasificacion_global_4_columna_rango"></string>
+    <string name="clasificacion_global_5_columna_identidad"></string>
+    <string name="clasificacion_global_6_contador_entradas">Mostrando las mejores %d entradas de %s en total</string>
+    <string name="clasificacion_global_7_tarjeta_rango"></string>
+    <string name="clasificacion_global_8_tarjeta_percentil">PERCENTIL</string>
 </resources>
