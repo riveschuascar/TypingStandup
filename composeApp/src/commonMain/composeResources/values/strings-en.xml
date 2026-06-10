@@ -1,2 +1,73 @@
-<resources>
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Loco xml export: Android strings
+ Project: Proyecto-Progra-Mobile
+ Locale: en-BO, English (Bolivia)
+ Exported by: Grizzz Carvajal
+ Exported at: Wed, 10 Jun 2026 13:25:25 -0400
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="pantalla_carga_1_comando">&gt; pkm install core-app --global</string>
+    <string name="pantalla_carga_2_logs">[INFO] Verifying developer...\n[OK] Handshake established\n[WARN] Syntax speed exceeds \nstandard limits.</string>
+    <string name="pantalla_carga_3_inicializando">&gt; Initializing TypingStandup...</string>
+    <string name="pantalla_carga_4_estado">Loading Environment</string>
+    <string name="pantalla_carga_5_modulos">FETCHING_MODULES: [\nlayout, analytics, leaderboard, engine\n]</string>
+    <string name="registro_usuario_1_cabecera">Sign In</string>
+    <string name="registro_usuario_2_archivo">USER_DATA.env</string>
+    <string name="registro_usuario_3_subtitulo">Initialize your developer identity to track progress.</string>
+    <string name="registro_usuario_4_pregunta">&gt; Ready to sign in?</string>
+    <string name="registro_usuario_5_boton">Sign In</string>
+    <string name="registro_usuario_6_terminos">By Signing In, you agree to the LICENSE and README terms.</string>
+    <string name="perfil_usuario_1_nivel">LVL %s</string>
+    <string name="perfil_usuario_2_username">root@%s</string>
+    <string name="perfil_usuario_3_antiguedad">Joined: %s days ago</string>
+    <string name="perfil_usuario_4_precision_titulo">ACCURACY</string>
+    <string name="perfil_usuario_5_wpm_titulo">WPM</string>
+    <string name="perfil_usuario_6_commits_titulo">Recent Commits</string>
+    <string name="perfil_usuario_7_ver_todo">View All</string>
+    <string name="perfil_usuario_commits_tiempo_hace_minutos">%dm ago</string>
+    <string name="perfil_usuario_commits_tiempo_hace_horas">%dh ago</string>
+    <string name="perfil_usuario_commits_tiempo_ayer">Yesterday</string>
+    <string name="perfil_usuario_commits_tiempo_hace_dias">%dd days ago</string>
+    <string name="menu_inferior_1_home">Home</string>
+    <string name="menu_inferior_2_play">Play</string>
+    <string name="menu_inferior_3_stats">Stats</string>
+    <string name="menu_inferior_4_ranks">Ranks</string>
+    <string name="editar_perfil_1_seccion_credenciales">Credentials</string>
+    <string name="editar_perfil_2_seccion_ajustes">Environment Settings</string>
+    <string name="editar_perfil_3_desc_notificaciones">Enable notifications</string>
+    <string name="editar_perfil_4_desc_haptic">Tactile vibrations on incorrect key strikes</string>
+    <string name="editar_perfil_5_desc_tema">Current mode: %s</string>
+    <string name="editar_perfil_6_boton_descartar">discard()</string>
+    <string name="editar_perfil_7_boton_guardar">save()</string>
+    <string name="editar_perfil_label_username">\"username\":</string>
+    <string name="editar_perfil_label_email">\"email\":</string>
+    <string name="editar_perfil_label_password">\"password\":</string>
+    <string name="editar_perfil_seccion_credenciales_username_desc">// Your unique handle</string>
+    <string name="editar_perfil_seccion_credenciales_email_desc">// For account recovery</string>
+    <string name="editar_perfil_seccion_credenciales_password_desc">// Keep it secure</string>
+    <string name="modos_juego_1_clasico_titulo">Classic Mode</string>
+    <string name="modos_juego_1_clasico_desc">The pure developer experience. Type through curated open-source codebases to build muscle memory and speed.</string>
+    <string name="modos_juego_2_desafios_titulo">Challenges</string>
+    <string name="modos_juego_2_desafios_desc">High-stakes environments. Type under pressure with disappearing text, strict error limits, and time decay.</string>
+    <string name="modos_juego_3_semanal_titulo">Weekly Standup</string>
+    <string name="modos_juego_3_semanal_desc">The global leaderboard sprint. Compete against the community on a unique code snippet refreshed every Monday.</string>
+    <string name="juego_progreso_1_tiempo_titulo">TIME</string>
+    <string name="juego_progreso_2_progreso_titulo">SESSION PROGRESS</string>
+    <string name="metricas_partida_1_titulo">Session Completed</string>
+    <string name="metricas_partida_2_wpm_subtitulo">WORDS/MIN</string>
+    <string name="metricas_partida_3_precision_subtitulo">% PRECISION</string>
+    <string name="metricas_partida_4_desglose_titulo">CHARACTER BREAKDOWN</string>
+    <string name="metricas_partida_5_desglose_aciertos">Successes</string>
+    <string name="metricas_partida_6_desglose_errores">Errors</string>
+    <string name="metricas_partida_7_boton_reintentar">Refact</string>
+    <string name="metricas_partida_8_boton_confirmar">Commit</string>
+    <string name="clasificacion_global_1_titulo">RANKINGS</string>
+    <string name="clasificacion_global_2_filtro_global">Global</string>
+    <string name="clasificacion_global_3_filtro_semanal">Weekly</string>
+    <string name="clasificacion_global_4_columna_rango">RANK</string>
+    <string name="clasificacion_global_5_columna_identidad">USER_IDENTITY</string>
+    <string name="clasificacion_global_6_contador_entradas">Showing top %d entries of %s total</string>
+    <string name="clasificacion_global_7_tarjeta_rango">GLOBAL RANK</string>
+    <string name="clasificacion_global_8_tarjeta_percentil">PERCENTILE</string>
 </resources>

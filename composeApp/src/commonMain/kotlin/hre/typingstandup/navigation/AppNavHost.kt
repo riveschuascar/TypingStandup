@@ -5,10 +5,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import hre.typingstandup.onboard.presentation.OnboardingViewModel
+import hre.typingstandup.onboard.presentation.viewmodel.OnboardingViewModel
 import hre.typingstandup.onboard.presentation.screen.OnboardingScreen
 import hre.typingstandup.signup.presentation.screen.SignUpScreen
-import hre.typingstandup.navigation.HomeScreen
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.runtime.getValue
 
