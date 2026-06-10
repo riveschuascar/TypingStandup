@@ -5,6 +5,9 @@ import hre.typingstandup.commonutils.storage.remoteconfig.RemoteConfigManager
 import hre.typingstandup.commonutils.storage.domain.repository.IRemoteConfigRepository
 import hre.typingstandup.commonutils.workers.connectivity.ConnectivityChecker
 import hre.typingstandup.remoteconfig.repository.FirebaseConfigRepository
+import hre.typingstandup.profile.data.ProfileRepositoryImpl
+import hre.typingstandup.profile.data.local.ProfileLocalDataSource
+import hre.typingstandup.profile.domain.repository.ProfileRepository
 import hre.typingstandup.signup.data.SignupRepositoryImpl
 import hre.typingstandup.signup.data.local.SignupLocalDataSource
 import hre.typingstandup.signup.data.remote.SignupRemoteDataSource
@@ -30,6 +33,11 @@ val dataModule = module {
     single<SignupRepository> {
         SignupRepositoryImpl(
             remoteDataSource = get(),
+            localDataSource = get()
+        )
+    }
+    single<ProfileRepository> {
+        ProfileRepositoryImpl(
             localDataSource = get()
         )
     }

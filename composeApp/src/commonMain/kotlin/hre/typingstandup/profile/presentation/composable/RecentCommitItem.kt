@@ -1,10 +1,13 @@
 package hre.typingstandup.profile.presentation.composable
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,31 +20,42 @@ fun RecentCommitItem(
     commit: RecentCommitUi
 ) {
 
-    Card {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = commit.title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
 
-            Text(
-                text = commit.title,
-                modifier = Modifier.weight(1f)
-            )
-
-            Text(commit.relativeDate)
-        }
-
-        Row {
-
-            Badge {
-                Text(text = "${commit.wpm} WPM")
+                Text(
+                    text = commit.relativeDate,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
 
-            Badge {
-                Text(text = "${commit.accuracy}% ACC")
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Badge {
+                    Text(text = "${commit.wpm} WPM")
+                }
+
+                Badge {
+                    Text(text = "${commit.accuracy}% ACC")
+                }
             }
         }
     }

@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import com.google.firebase.FirebaseApp
-import hre.typingstandup.di.getModules
-import hre.typingstandup.di.platformModule
 import hre.typingstandup.navigation.AppNavHost
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
 import typingstandup.designsystem.composable.theme.typingStandupTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,14 +19,14 @@ class MainActivity : ComponentActivity() {
 
         FirebaseApp.initializeApp(this)
 
-        startKoin {
-            androidContext(this@MainActivity)
-            modules(getModules() + platformModule)
-        }
-
         setContent {
             typingStandupTheme {
-                AppNavHost()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AppNavHost()
+                }
             }
         }
     }

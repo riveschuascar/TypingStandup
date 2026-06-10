@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import hre.typingstandup.onboard.presentation.viewmodel.OnboardingViewModel
 import hre.typingstandup.onboard.presentation.screen.OnboardingScreen
+import hre.typingstandup.profile.presentation.screen.ProfileScreen
 import hre.typingstandup.signup.presentation.screen.SignUpScreen
 import org.koin.compose.viewmodel.koinViewModel
 import androidx.compose.runtime.getValue
@@ -39,6 +40,10 @@ fun AppNavHost() {
 
         composable(NavRoute.Home.route) {
             HomeScreen()
+        }
+
+        composable(NavRoute.Profile.route) {
+            ProfileScreen(navController)
         }
     }
 }

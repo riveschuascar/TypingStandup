@@ -1,209 +1,396 @@
-# Plan General
+Puedes plantearlo como una especificación de trabajo para un agente de desarrollo:
 
-## Fase 1 — Finalizar Signup
+# Objetivo
 
-### Objetivo
+Implementar la capa **Domain** y **Data** de una nueva feature siguiendo **Clean Architecture** en un proyecto móvil (Kotlin Multiplatform), conectar la capa **Presentation** ya existente con estas capas, registrar la feature en navegación y configurar la inyección de dependencias.
 
-Completar la arquitectura limpia del módulo Signup conectando Presentación → Dominio → Datos.
-
----
-
-### 1.1 Analizar implementación actual
-
-**Tareas**
-
-* Revisar estructura actual de `signup`.
-* Identificar qué existe en:
-
-  * presentation
-  * domain
-  * data
-* Verificar modelos utilizados.
-* Identificar dependencias con Firebase.
-
-**Entregables**
-
-* Mapa de arquitectura actual.
-* Lista de clases faltantes.
-
----
-
-### 1.2 Implementar capa Domain
-
-**Tareas**
-
-Crear:
+La estructura objetivo es:
 
 ```text
-signup/
- └─ domain/
-     ├─ model/
-     ├─ repository/
-     ├─ usecase/
+feature/
+├── data/
+├── domain/
+└── presentation/
 ```
+
+---
+
+# Contexto del proyecto
+
+* La capa `presentation/` ya existe y contiene las pantallas y ViewModels necesarios.
+* Existe una base de datos local Room:
+
+  * Constructor Android en `androidMain`.
+  * Constructor compartido y definición de tablas en `commonMain`.
+* Actualmente no existe autenticación funcional (signup/login).
+* Para pruebas y demo se pueden generar datos mock o aleatorios.
+* La fuente principal de datos será la caché local (Room).
+* No se requiere integración con backend real.
+
+---
+
+# Responsabilidades del agente
+
+## 1. Analizar la feature existente
+
+Revisar:
+
+```text
+feature/presentation/
+```
+
+Identificar:
+
+* Pantallas.
+* ViewModels.
+* Estados (`UiState`)
+* Modelos utilizados por la UI.
+
+Determinar qué datos necesita realmente la presentación.
 
 Implementar:
+* Eventos.
+* Efectos.
 
-```kotlin
-interface SignupRepository
+Segun la funcionalidad y la integracion con la capa de datos.
+
+ejemplos:
+```sealed interface SignUpEvent {
+    data class UsernameChanged(
+        val value: String
+    ) : SignUpEvent
+}
+
+sealed interface SignUpEffect {
+    data class ShowError(
+        val message: String
+    ) : SignUpEffect
+
+    data object NavigateToHome : SignUpEffect
+}
+```
+---
+
+## 2. Crear la capa Domain
+
+Crear la estructura:
+
+```text
+feature/domain/
+├── model/
+├── repository/
+└── usecase/
 ```
 
-Casos de uso:
+### Modelos de dominio
+
+Definir entidades puras de negocio.
+
+Ejemplo:
 
 ```kotlin
-CreateUserUseCase
-ValidateSignupUseCase
-SavePendingSignupUseCase
+data class Item(
+    val id: String,
+    val title: String,
+    val description: String
+)
 ```
 
-Modelos de dominio:
+### Repositorio
+
+Crear contrato:
 
 ```kotlin
-User
-SignupData
-SignupResult
+interface FeatureRepository {
+    suspend fun getItems(): List<Item>
+}
 ```
 
-**Criterios**
+### Casos de uso
 
-* Domain no debe depender de Firebase.
-* Domain no debe depender de Room.
+Crear los casos de uso necesarios.
+
+Ejemplo:
+
+```kotlin
+class GetItemsUseCase(
+    private val repository: FeatureRepository
+) {
+    suspend operator fun invoke() =
+        repository.getItems()
+}
+```
+
+Regla:
+
+* La capa Domain no debe depender de Data.
 * Solo interfaces y lógica de negocio.
 
 ---
 
-### 1.3 Implementar capa Data
+## 3. Crear la capa Data
 
-#### Firestore
+Crear estructura:
 
-Crear datasource:
-
-```kotlin
-SignupFirestoreDataSource
+```text
+feature/data/
+├── datasource/
+├── local/
+├── mapper/
+└── repository/
 ```
 
-Responsabilidades:
+### Entidades Room
 
-* Crear documento de usuario.
-* Actualizar usuario si existe.
-* Manejar errores.
+Utilizar las tablas ya registradas en el constructor común.
 
-#### Room
-
-Crear datasource:
+Si la entidad no existe:
 
 ```kotlin
-SignupLocalDataSource
+@Entity
+data class ItemEntity(...)
 ```
 
-Responsabilidades:
+### DAO
 
-* Persistir usuario registrado localmente.
-* Recuperar usuario.
+Crear DAO necesarios:
 
-#### Repository
+```kotlin
+@Dao
+interface ItemDao {
+    @Query(...)
+    suspend fun getAll(): List<ItemEntity>
+
+    @Insert(...)
+    suspend fun insertAll(...)
+}
+```
+
+### Mappers
 
 Implementar:
 
 ```kotlin
-SignupRepositoryImpl
+ItemEntity -> Item
+Item -> ItemEntity
+```
+
+### DataSource local
+
+```kotlin
+class LocalItemDataSource(
+    private val dao: ItemDao
+)
+```
+
+### Implementación del repositorio
+
+```kotlin
+class FeatureRepositoryImpl(
+    private val localDataSource: LocalItemDataSource
+) : FeatureRepository
 ```
 
 Flujo:
 
+1. Consultar Room.
+2. Si existen datos:
+
+   * devolverlos.
+3. Si no existen:
+
+   * generar datos demo/mock.
+   * persistirlos.
+   * devolverlos.
+
+Ejemplo:
+
 ```text
-Signup
-   ↓
-Firestore
-   ↓ éxito
-Room
-   ↓
-Result.Success
+Room -> datos encontrados -> retornar
+
+Room vacío ->
+generar mocks ->
+guardar ->
+retornar
 ```
 
-Si Firestore falla:
+---
+
+## 4. Generación de datos demo
+
+Mientras no exista login/backend:
+
+Crear un proveedor:
+
+```kotlin
+object FeatureFakeDataProvider
+```
+
+Generar:
+
+```kotlin
+List(10) {
+    Item(...)
+}
+```
+
+Los datos deben:
+
+* Ser consistentes.
+* Tener IDs únicos.
+* Permitir probar la UI.
+
+Ejemplo:
 
 ```text
-Firestore
-   ↓ error
-Result.Error
+Usuario Demo 1
+Usuario Demo 2
+Usuario Demo 3
+...
 ```
-
-No guardar en Room cuando falle el registro remoto.
 
 ---
 
-### 1.4 Conectar Presentation
+## 5. Conectar Presentation con Domain
 
-Revisar ViewModel actual.
+Modificar ViewModels existentes.
 
-Implementar:
-
-#### Eventos
+Antes:
 
 ```kotlin
-sealed interface SignupEvent
+class FeatureViewModel
 ```
+
+Después:
+
+```kotlin
+class FeatureViewModel(
+    private val getItemsUseCase: GetItemsUseCase
+)
+```
+
+Reemplazar cualquier mock interno por:
+
+```kotlin
+getItemsUseCase()
+```
+
+Mantener intactos:
+
+* UiState.
+* Eventos.
+* Navegación interna.
+
+La UI no debe conocer Room ni DataSource.
+
+---
+
+## 6. Registrar dependencias en DI
+
+Agregar la feature en:
+
+```text
+di/
+```
+
+Crear módulo:
+
+```kotlin
+featureModule
+```
+
+Registrar:
+
+### DAO
+
+```kotlin
+factory { get<AppDatabase>().itemDao() }
+```
+
+### DataSource
+
+```kotlin
+factory {
+    LocalItemDataSource(get())
+}
+```
+
+### Repository
+
+```kotlin
+single<FeatureRepository> {
+    FeatureRepositoryImpl(get())
+}
+```
+
+### UseCases
+
+```kotlin
+factory {
+    GetItemsUseCase(get())
+}
+```
+
+### ViewModel
+
+```kotlin
+viewModel {
+    FeatureViewModel(get())
+}
+```
+
+Agregar el módulo al inicializador principal de DI.
+
+---
+
+## 7. Registrar navegación
+
+Agregar la nueva feature al router:
+
+```text
+navigation/
+```
+
+Registrar:
+
+### Route
+
+```kotlin
+object FeatureRoute
+```
+
+o
+
+```kotlin
+sealed class Route
+```
+
+según la arquitectura existente.
+
+### Destino
+
+```kotlin
+composable(...)
+```
+
+### Integración
+
+Incluir la pantalla en el grafo principal.
 
 Ejemplo:
 
 ```kotlin
-OnNameChanged
-OnEmailChanged
-OnPasswordChanged
-OnSignupClicked
+NavHost {
+    featureGraph()
+}
 ```
 
 ---
 
-#### Estado
-
-```kotlin
-data class SignupState
-```
-
-Ejemplo:
-
-```kotlin
-isLoading
-name
-email
-password
-error
-```
-
----
-
-#### Efectos
-
-```kotlin
-sealed interface SignupEffect
-```
-
-Ejemplo:
-
-```kotlin
-NavigateNext
-ShowError
-```
-
----
-
-#### ViewModel
-
-Responsabilidades:
-
-* Procesar eventos.
-* Ejecutar UseCases.
-* Actualizar State.
-* Emitir Effects.
-
-Flujo:
+## 8. Flujo esperado final
 
 ```text
 UI
- ↓
-Event
  ↓
 ViewModel
  ↓
@@ -211,304 +398,47 @@ UseCase
  ↓
 Repository
  ↓
-Firestore
+LocalDataSource
  ↓
 Room
+```
+
+Si Room está vacío:
+
+```text
+Room vacío
  ↓
-Effect
+FakeDataProvider
+ ↓
+Guardar en Room
+ ↓
+Retornar datos
 ```
 
-**Criterios de aceptación**
-
-* Signup completo funcionando.
-* Firestore persiste usuario.
-* Room guarda usuario tras éxito.
-* Navegación disparada mediante Effect.
-* Sin llamadas directas a Firebase desde UI.
-
----
-
-# Fase 2 — Refactorizar Onboard
-
-### Objetivo
-
-Validar migración Android → Common y soportar Remote Config.
-
----
-
-### 2.1 Auditoría del traslado
-
-Revisar:
+Si Room tiene datos:
 
 ```text
-androidMain/onboard
-        ↓
-commonMain/onboard
-```
-
-Verificar:
-
-* Imports rotos.
-* Dependencias Android.
-* Context.
-* Recursos.
-* ViewModels.
-* Navegación.
-
-Buscar:
-
-```kotlin
-android.*
-androidx.lifecycle.*
-Context
-Activity
-```
-
----
-
-### 2.2 Adaptar código multiplataforma
-
-Mover cualquier lógica Android específica a:
-
-```text
-androidMain
-```
-
-Mantener en common:
-
-```text
-UI
-State
-Events
-Effects
+Room
+ ↓
+Repository
+ ↓
+UseCase
+ ↓
 ViewModel
-UseCases
+ ↓
+UI
 ```
 
 ---
 
-### 2.3 ViewModel para Remote Config
-
-Crear:
-
-```kotlin
-OnboardingViewModel
-```
-
-Estados:
-
-```kotlin
-Loading
-Success
-Error
-```
-
-Datasource:
-
-```kotlin
-RemoteConfigDataSource
-```
-
-Repositorio:
-
-```kotlin
-OnboardingRepository
-```
-
-Caso de uso:
-
-```kotlin
-GetOnboardingConfigUseCase
-```
-
-Flujo:
-
-```text
-ViewModel -> UseCase -> Repository -> RemoteConfig -> UI
-```
-
----
-
-### Criterios
-
-* Onboarding 100% funcional desde commonMain.
-* Datos obtenidos desde Remote Config.
-* UI espera correctamente carga remota.
-
----
-
-# Fase 3 — Inyección de Dependencias (Koin)
-
-### Objetivo
-
-Registrar todos los módulos faltantes.
-
----
-
-### 3.1 Auditar carpeta DI
-
-Revisar:
-
-```text
-commonMain/di/
-```
-
-Los 4 archivos existentes.
-
-Identificar:
-
-* módulos definidos
-* módulos faltantes
-* dependencias sin registrar
-
----
-
-### 3.2 Registrar Signup
-
-Agregar:
-
-```kotlin
-single<SignupRepository>
-factory<CreateUserUseCase>()
-factory<ValidateSignupUseCase>()
-viewModel<SignupViewModel>()
-```
-
-Registrar:
-
-```kotlin
-SignupFirestoreDataSource
-SignupLocalDataSource
-```
-
----
-
-### 3.3 Registrar Onboarding
-
-Agregar:
-
-```kotlin
-RemoteConfigDataSource
-OnboardingRepository
-GetOnboardingConfigUseCase
-OnboardingViewModel
-```
-
----
-
-### 3.4 Verificar módulos platform
-
-Confirmar que:
-
-```kotlin
-RoomDatabase
-```
-
-sigue siendo creado desde:
-
-```text
-androidMain
-```
-
-y expuesto a common mediante DI.
-
----
-
-### Criterios
-
-* Koin inicia sin errores.
-* Todas las dependencias resuelven correctamente.
-* Ningún ViewModel se crea manualmente.
-
----
-
-# Fase 4 — Navegación
-
-### Objetivo
-
-Integrar Signup y Onboarding en el sistema actual.
-
----
-
-### 4.1 Revisar carpeta navigation
-
-Archivos existentes:
-
-```text
-navigation/
- ├─ Routes
- └─ NavigationGraph
-```
-
-Validar:
-
-* rutas registradas
-* parámetros
-* deep links (si existen)
-
----
-
-### 4.2 Integrar Onboarding
-
-Agregar ruta:
-
-```kotlin
-OnboardingRoute
-```
-
-Registrar pantalla.
-
----
-
-### 4.3 Integrar Signup
-
-Agregar:
-
-```kotlin
-SignupRoute
-```
-
-Registrar pantalla.
-
----
-
-### 4.4 Conectar Effects → Navigation
-
-Ejemplo:
-
-```kotlin
-SignupEffect.NavigateNext
-```
-
-debe disparar:
-
-```kotlin
-navigator.navigate(...)
-```
-
-sin navegación directa desde ViewModel.
-
----
-
-### Criterios
-
-* Onboarding → Signup → siguiente pantalla.
-* Navegación controlada por Effects.
-* Sin dependencias de navegación dentro del dominio.
-
----
-
-# Orden recomendado para el agente
-
-1. Auditar Signup actual.
-2. Implementar Domain de Signup.
-3. Implementar Data de Signup (Firestore + Room).
-4. Conectar Presentation.
-5. Probar flujo completo Signup.
-6. Auditar Onboarding movido a commonMain.
-7. Crear ViewModel + Remote Config.
-8. Revisar y completar módulos Koin.
-9. Integrar navegación.
-10. Ejecutar validación final de arquitectura KMP.
-
-**Resultado esperado:** Signup funcional end-to-end, Onboarding migrado correctamente a commonMain con Remote Config, DI centralizada en Koin y navegación completamente integrada.
+# Criterios de aceptación
+
+* Se crea completamente `domain/`.
+* Se crea completamente `data/`.
+* La presentación utiliza UseCases.
+* No quedan mocks dentro de ViewModels.
+* La feature está registrada en `navigation/`.
+* La feature está registrada en `di/`.
+* Los datos provienen de Room.
+* Si Room está vacío se generan datos demo automáticamente.
+* La aplicación compila sin errores en KMP Android.

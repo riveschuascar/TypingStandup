@@ -5,17 +5,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import hre.typingstandup.navigation.NavRoute
+import hre.typingstandup.profile.presentation.composable.ProfileHeader
+import hre.typingstandup.profile.presentation.composable.RecentCommitsSection
+import hre.typingstandup.profile.presentation.composable.StatsSection
 import hre.typingstandup.profile.presentation.state.ProfileState
-import hre.typingstandup.profile.presentation.state.RecentCommitUi
+import hre.typingstandup.profile.presentation.viewmodel.ProfileViewModel
 import typingstandup.designsystem.composable.ui.BotNavBar
 import typingstandup.designsystem.composable.ui.TopBarVariant
 import typingstandup.designsystem.composable.ui.TypingStandupTopBar
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ProfileScreen(
-    state: ProfileState
+    navController: NavHostController,
+    viewModel: ProfileViewModel = koinViewModel()
 ) {
+    val state by viewModel.state.collectAsState()
     Scaffold(
         topBar = {
             TypingStandupTopBar(
@@ -25,7 +35,13 @@ fun ProfileScreen(
         bottomBar = {
             BotNavBar(
                 selectedIndex = 3,
-                onItemClick = {}
+                onItemClick = { index ->
+                    if (index == 0) {
+                        navController.navigate(NavRoute.Home.route) {
+                            popUpTo(NavRoute.Home.route)
+                        }
+                    }
+                }
             )
         }
     ) { padding ->
@@ -54,19 +70,4 @@ fun ProfileScreen(
             }
         }
     }
-}
-
-@Composable
-fun RecentCommitsSection(commits: List<RecentCommitUi>) {
-    TODO("Not yet implemented")
-}
-
-@Composable
-fun StatsSection(wpm: Int?, accuracy: Int?) {
-    TODO("Not yet implemented")
-}
-
-@Composable
-fun ProfileHeader(x0: ProfileState) {
-    TODO("Not yet implemented")
 }
